@@ -73,6 +73,7 @@ func main() {
 	}
 	log.Println("Commit message validated")
 	log.Println("Commit message generated")
+	exec.Command("git", "config", "--local", "pull.rebase", "true").Run()
 	// Get current branch name to commit the changes
 	branchName, err := exec.Command("git", "rev-parse", "--abbrev-ref", "HEAD").Output()
 	if err != nil {
