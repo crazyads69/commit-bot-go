@@ -91,7 +91,7 @@ func main() {
 	}
 	log.Println("Changes committed", string(commitOutput))
 	// Push the changes to the current branch
-	pushOutput, err := exec.Command("git", "push", "-u", "origin", string(branchName)).Output()
+	pushOutput, err := exec.Command("git", "push", "-u", "origin", strings.TrimSpace(string(branchName))).CombinedOutput()
 	if err != nil {
 		log.Fatal(err)
 	}
