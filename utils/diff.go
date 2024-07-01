@@ -31,7 +31,7 @@ func GetDiffChanges() string {
 	}
 	// Remove the part after > in the committer info
 	committer = bytes.Split(committer, []byte(">"))[0]
-	log.Println("Committer: " + string(committer))
+	log.Println("Committer: " + string(committer) + ">")
 	// Append the committer info to the diff
 	diff = append(diff, []byte("\n\nCommitter: "+string(committer)+">")...)
 	// Return the output as a string

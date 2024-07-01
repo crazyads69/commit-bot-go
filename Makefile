@@ -10,25 +10,26 @@ all: build-linux build-windows build-darwin-amd64 build-darwin-arm64
 	@echo "Built for all platforms."
 
 build-linux:
-	GOOS=linux GOARCH=amd64 $(GOBUILD) -o dist/linux64/$(BINARY_NAME)
+	GOOS=linux GOARCH=amd64 $(GOBUILD) -ldflags="-s -w" -o dist/linux64/$(BINARY_NAME)
 	@echo "Built for Linux 64-bit."
 
 build-windows:
-	GOOS=windows GOARCH=amd64 $(GOBUILD) -o dist/windows64/$(BINARY_NAME).exe
+	GOOS=windows GOARCH=amd64 $(GOBUILD) -ldflags="-s -w" -o dist/windows64/$(BINARY_NAME).exe
 	@echo "Built for Windows 64-bit."
 
 build-darwin-amd64:
-	GOOS=darwin GOARCH=amd64 $(GOBUILD) -o dist/darwin-amd64/$(BINARY_NAME)
+	GOOS=darwin GOARCH=amd64 $(GOBUILD) -ldflags="-s -w" -o dist/darwin-amd64/$(BINARY_NAME)
 	@echo "Built for macOS Intel 64-bit."
 
 build-darwin-arm64:
-	GOOS=darwin GOARCH=arm64 $(GOBUILD) -o dist/darwin-arm64/$(BINARY_NAME)
+	GOOS=darwin GOARCH=arm64 $(GOBUILD) -ldflags="-s -w" -o dist/darwin-arm64/$(BINARY_NAME)
 	@echo "Built for macOS Apple Silicon 64-bit."
 
 # Install scripts
 install-linux: build-linux
 	@echo "Installing on Linux..."
 	sudo cp dist/linux64/$(BINARY_NAME) /usr/local/bin/
+	sudo chmod 755 /usr/local/bin/$(BINARY_NAME)
 	@echo "Installed to /usr/local/bin/$(BINARY_NAME)"
 
 install-windows: build-windows
@@ -40,11 +41,13 @@ install-windows: build-windows
 install-darwin-amd64: build-darwin-amd64
 	@echo "Installing on macOS..."
 	sudo cp dist/darwin-amd64/$(BINARY_NAME) /usr/local/bin/
+	sudo chmod 755 /usr/local/bin/$(BINARY_NAME)
 	@echo "Installed to /usr/local/bin/$(BINARY_NAME)"
 
 install-darwin-arm64: build-darwin-arm64
 	@echo "Installing on macOS..."
 	sudo cp dist/darwin-arm64/$(BINARY_NAME) /usr/local/bin/
+	sudo chmod 755 /usr/local/bin/$(BINARY_NAME)
 	@echo "Installed to /usr/local/bin/$(BINARY_NAME)"
 
 # Clean target

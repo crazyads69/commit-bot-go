@@ -28,7 +28,30 @@ func main() {
 	defer client.Close()
 
 	// The Gemini 1.5 models are versatile and work with most use cases
-	model := client.GenerativeModel("gemini-1.5-pro-latest")
+	model := client.GenerativeModel(os.Getenv("GEMINI_MODEL"))
+	// Configure the model
+	model.SetTemperature(0.6)
+	model.SetMaxOutputTokens(8192)
+	model.SetTopP(0.9)
+	model.SafetySettings = []*genai.SafetySetting{
+		{
+			Category:  genai.HarmCategoryHarassment,
+			Threshold: genai.HarmBlockNone,
+		},
+		{
+			Category:  genai.HarmCategoryHateSpeech,
+			Threshold: genai.HarmBlockNone,
+		},
+		{
+			Category:  genai.HarmCategorySexuallyExplicit,
+			Threshold: genai.HarmBlockNone,
+		},
+		{
+			Category:  genai.HarmCategoryDangerousContent,
+			Threshold: genai.HarmBlockNone,
+		},
+	}
+
 	// Get the diff changes
 	diff := utils.GetDiffChanges()
 	if diff == "" {
@@ -60,9 +83,6 @@ func main() {
 	commitTitle := commitMessage[:strings.Index(commitMessage, "\n")]
 	// Get the leftover part of the commit message as the commit body
 	commitBody := commitMessage[strings.Index(commitMessage, "\n")+1:]
-
-	log.Println("Commit title: " + commitTitle)
-	log.Println("Commit body: " + commitBody)
 	// Commit the changes with the generated commit message
 	_, err = exec.Command("git", "commit", "-m", commitTitle, "-m", commitBody).Output()
 	if err != nil {
