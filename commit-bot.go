@@ -96,4 +96,5 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Println("Changes pushed", string(pushOutput))
+	log.Println("Changes pushed", string(pushOutput))
 }
