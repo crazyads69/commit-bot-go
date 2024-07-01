@@ -85,13 +85,15 @@ func main() {
 	// Get the leftover part of the commit message as the commit body
 	commitBody := commitMessage[strings.Index(commitMessage, "\n")+1:]
 	// Commit the changes with the generated commit message
-	_, err = exec.Command("git", "commit", "-m", commitTitle, "-m", commitBody).Output()
+	commitOutput, err := exec.Command("git", "commit", "-m", commitTitle, "-m", commitBody).Output()
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Println("Changes committed", string(commitOutput))
 	// Push the changes to the current branch
-	_, err = exec.Command("git", "push", "-u", "origin", string(branchName)).Output()
+	pushOutput, err := exec.Command("git", "push", "-u", "origin", string(branchName)).Output()
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Println("Changes pushed", string(pushOutput))
 }
