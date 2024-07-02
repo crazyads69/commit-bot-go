@@ -35,7 +35,24 @@ func main() {
 	model.SetMaxOutputTokens(8192)
 	model.SetTopP(0.9)
 	// (Safety settings remain the same)
-
+	model.SafetySettings = []*genai.SafetySetting{
+		{
+			Category:  genai.HarmCategoryHarassment,
+			Threshold: genai.HarmBlockNone,
+		},
+		{
+			Category:  genai.HarmCategoryHateSpeech,
+			Threshold: genai.HarmBlockNone,
+		},
+		{
+			Category:  genai.HarmCategorySexuallyExplicit,
+			Threshold: genai.HarmBlockNone,
+		},
+		{
+			Category:  genai.HarmCategoryDangerousContent,
+			Threshold: genai.HarmBlockNone,
+		},
+	}
 	// --- Commit and Push Logic ---
 	retryDelay := 60 * time.Second
 	for {
@@ -47,7 +64,6 @@ func main() {
 
 		commitMessage := utils.GenerateCommitMessage(diff, model, ctx)
 		commitMessage = utils.CleanSpecialCharacter(commitMessage)
-		log.Println("Generated commit message:", commitMessage)
 
 		if !utils.ValidateCommitMessage(commitMessage) {
 			log.Println("Invalid commit message. Retrying in", retryDelay, "...")
