@@ -3,7 +3,10 @@ GOCMD=go
 GOBUILD=$(GOCMD) build
 GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
-BINARY_NAME=commit-bot-go
+BINARY_NAME=commit-bot
+
+# Build targets
+.PHONY: all build-* install-* clean test
 
 # Build targets
 all: build-linux build-windows build-darwin-amd64 build-darwin-arm64

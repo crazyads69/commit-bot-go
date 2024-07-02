@@ -1,31 +1,22 @@
 package utils
 
-import "strings"
+import (
+	"regexp"
+	"strings"
+)
 
-// Define the clean function that removes special characters from the commit message
+// CleanSpecialCharacter removes unwanted characters from a commit message.
 func CleanSpecialCharacter(commitMessage string) string {
-	// Define the special characters to remove (Markdown syntax)
-	specialCharacters := []string{"```", "**", "`", "#", "*"}
-	// Remove the special characters
-	for _, character := range specialCharacters {
-		commitMessage = strings.ReplaceAll(commitMessage, character, "")
-	}
-	// Strip the commit message
-	commitMessage = strings.TrimSpace(commitMessage)
-	return commitMessage
+	// Use a regular expression for more flexible pattern matching
+	re := regexp.MustCompile("```|\\*\\*|`|#|\\*")
+	commitMessage = re.ReplaceAllString(commitMessage, "")
+
+	return strings.TrimSpace(commitMessage)
 }
 
-// Define the function that validates the commit message structure
+// ValidateCommitMessage checks if a commit message follows the conventional format.
 func ValidateCommitMessage(commitMessage string) bool {
-	// Define the commit message structure
-	// <type>[optional scope]: <short summary>
-	// Split the commit message into parts
-	parts := strings.Split(commitMessage, ":")
-	// Get the type of the commit message
-	commitType := strings.Split(parts[0], "(")[0]
-	// Check if the commit type is valid
-	if commitType != "feat" && commitType != "fix" && commitType != "docs" && commitType != "style" && commitType != "refactor" && commitType != "perf" && commitType != "test" && commitType != "chore" {
-		return false
-	}
-	return true
+	// More efficient and readable regular expression for validation
+	validCommit := regexp.MustCompile(`^(feat|fix|docs|style|refactor|perf|test|chore|ci|build|revert)(?:\(.+?\))?\:?\s.+`)
+	return validCommit.MatchString(commitMessage)
 }

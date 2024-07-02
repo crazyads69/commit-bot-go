@@ -4,7 +4,7 @@ package utils
 const (
 	SYSTEM_PROMPT = `## Generate a High-Quality Git Commit Message
 
-Please create a concise and informative commit message following best practices for Git commit messages.
+Please create a concise and informative commit message following best practices.
 
 **Context:**
 
@@ -34,11 +34,11 @@ The following is a diff of the changes made in this commit:`
 **Guidelines:**
 
 1. **Subject Line:**
+   - Include an optional scope after the type to specify the affected code (e.g., "feat(auth):").
    - Use imperative mood (e.g., "Add", "Fix", "Update").
    - Keep it concise (maximum 50 characters or less).
    - Capitalize the first letter.
    - Do not end with a period.
-   - **Include an optional scope after the type to specify the part of the codebase affected (e.g., "feat(auth):").** 
 
 2. **Body:**
    - Use if more explanation is needed.
