@@ -4,13 +4,11 @@ import (
 	"commit-bot/utils"
 	"context"
 	"log"
-	"os"
 	"os/exec"
 	"strings"
 	"time"
 
 	"github.com/google/generative-ai-go/genai"
-	"github.com/joho/godotenv"
 	"google.golang.org/api/option"
 )
 
@@ -18,19 +16,17 @@ func main() {
 	// --- Setup ---
 	ctx := context.Background()
 
-	// Load environment variables
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file:", err) // Improved error message
-	}
-
+	// Define Gemini API key and model
+	GEMINI_API_KEY := "your-api-key-here"
+	GEMINI_MODEL := "your-model-id-here"
 	// Initialize Gemini client
-	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_API_KEY")))
+	client, err := genai.NewClient(ctx, option.WithAPIKey(GEMINI_API_KEY))
 	if err != nil {
 		log.Fatal("Error creating Gemini client:", err) // Improved error message
 	}
 	defer client.Close()
 
-	model := client.GenerativeModel(os.Getenv("GEMINI_MODEL"))
+	model := client.GenerativeModel(GEMINI_MODEL)
 	model.SetTemperature(0.6)
 	model.SetMaxOutputTokens(8192)
 	model.SetTopP(0.9)
